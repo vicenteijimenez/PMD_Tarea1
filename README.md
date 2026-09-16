@@ -19,18 +19,29 @@ Este proyecto aborda la resolución de problemas de procesamiento masivo de dato
 
 ## Estructura del Repositorio
 
-* **`Makefile`**: Automatización del ciclo de compilación, ejecución de tests.
-* **`README.md`**: Documentación técnica y guía de reproducción.
-* **`.gitignore`**: Exclusión de archivos binarios, salidas temporales y carpetas de datos genómicos.
-* **`run_problema1.sh`**: Script interactivo con las soluciones a los incisos 1.a al 1.j.
-* **`aligner.awk`**: Alineador secuencial implementado en GNU Awk (con aritmética FNV-1a compatible con mantisa de 53 bits).
-* **`aligner_seq.c`**: Alineador secuencial de alto rendimiento escrito en C (`-O3`).
-
-
-* **`aligner_pthreads.c`**: Alineador concurrente con arquitectura Productor-Consumidor y buffer de reordenamiento monotónico para asegurar salidas idénticas en orden FIFO.
-* **`tests/run_tests.sh`**: Suite de validación automatizada mediante comparaciones binarias (`cmp`).
-* **`tests/stats.awk`**: Script auxiliar para el desglose de tasas de hits y distribución de frecuencias de puntajes.
-* **`data/`**: Carpeta local para los datasets de referencia y lecturas (no incluida en el control de versiones).
+.
+├── Makefile                # Automatización de compilación, ejecución, reporte y descarga
+├── README.md               # Documentación general y guía de uso
+├── .gitignore              # Exclusión de binarios, salidas temporales y datos biológicos
+├── run_problema_1.sh       # Script con las soluciones a la Parte 1 (incisos a-j)
+├── aligner.awk             # Parte 2: Implementación secuencial en AWK (FNV-1a 53-bit)
+├── aligner_seq.c           # Parte 2: Implementación secuencial optimizada en C (-O3)
+├── aligner_pthreads.c      # Parte 2: Implementación multihilo en C (Pthreads + Buffer de Reorden)
+├── informe.tex             # Código fuente en LaTeX del informe formal
+├── informe.pdf             # Informe técnico final compilado en PDF
+├── scripts/
+│   └── download_data.sh    # Descarga automatizada y preparación ligera de datasets
+├── tests/
+│   ├── test_ecoli.sh       # Suite automatizada de pruebas para E. coli (AWK vs C vs Pthreads)
+│   ├── test_human.sh       # Suite automatizada de pruebas para Homo sapiens (GRCh38)
+│   └── stats.awk           # Analizador de distribución de aciertos (hits) y puntajes
+└── data/                   # Directorio de insumos (ignorado por Git, generado con make data)
+    ├── worldcitiespop.csv.gz
+    ├── matrix.txt
+    ├── ecoli-k12-ref.fna
+    ├── EC.50X.R1.fastq.gz
+    ├── GRCh38_chr21.fna
+    └── sample_human.fq
 
 ---
 
@@ -82,6 +93,15 @@ make
 
 ```
 
+### Obtención y Carga de Datos
+
+Los archivos biológicos y datasets masivos superan el límite de tamaño de GitHub y están excluidos en `.gitignore`. Para inicializar el directorio `data/` con todos los insumos necesarios (Para el genoma humano solo se descargara el genoma 21, esto debido a que GRCh38 full es muy pesado (>50 GB + ref)):
+
+```bash
+make data
+
+```
+
 ### Ejecución de la Parte 1
 
 * Todos los ejercicios:
@@ -101,20 +121,26 @@ make test-p1
 
 ### Ejecución de la Parte 2
 
-* Suite de pruebas y validación comparativa (AWK vs C Secuencial vs Pthreads):
+* Validación en E. coli (AWK vs C secuencial vs C pthreads):
+
 ```bash
-make test-p2
+make test-ecoli
 
 ```
 
 
-* Batería completa de pruebas (Parte 1 y Parte 2):
+* Validación en Homo sapiens (C secuencial vs C pthreads sobre chr21):
+
+```bash
+make test-human
+
+```
+
+* Suite completa de pruebas (Parte 1 + E. coli + Humano):
 ```bash
 make test
 
 ```
-
-
 
 ### Limpieza de Archivos Temporales
 
@@ -124,26 +150,3 @@ make clean
 ```
 
 ---
-
-## Reproducibilidad de Muestras (Genoma Humano)
-
-Para la evaluación sobre *Homo sapiens*, se extrae una muestra de control de 1.000 lecturas desde el archivo original utilizando Python:
-
-```bash
-python3 -c '
-import gzip
-with gzip.open("data/HG002-MGISEQ-L03-1.fq.gz", "rt") as fin, open("data/sample_1000.fq", "w") as fout:
-    for i in range(4000):
-        line = fin.readline()
-        if not line: break
-        fout.write(line)
-'
-
-```
-
-La referencia reducida de prueba se genera con:
-
-```bash
-head -n 500000 data/GRCh38_ref.fna > data/GRCh38_test_small.fna
-
-```

@@ -6,7 +6,7 @@ LATEX = pdflatex
 TARGETS = aligner_seq aligner_pthreads
 REPORT = informe.pdf
 
-.PHONY: all clean test test-p1 test-p2 report help
+.PHONY: all clean test test-p1 test-ecoli test-human report data setup help
 
 all: $(TARGETS)
 
@@ -22,27 +22,29 @@ $(REPORT): informe.tex
 	$(LATEX) informe.tex
 	$(LATEX) informe.tex
 
+data:
+	@chmod +x scripts/download_data.sh
+	./scripts/download_data.sh
+
+setup: data all
+
 test-p1:
-	@chmod +x run_problema1.sh
+	@chmod +x run_problema_1.sh
 	./run_problema1.sh all
 
-test-p2: all
-	@chmod +x tests/run_tests.sh
-	./tests/run_tests.sh
+test-ecoli: all
+	@chmod +x tests/test_ecoli.sh
+	./tests/test_ecoli.sh
 
-test: test-p1 test-p2
+test-human: all
+	@chmod +x tests/test_human.sh
+	./tests/test_human.sh
+
+# Ejecuta todas las pruebas en secuencia
+test: test-p1 test-ecoli test-human
 
 clean:
 	rm -f $(TARGETS)
 	rm -f *.aux *.log *.out *.toc *.synctex.gz
 	rm -rf resultados/
 	@echo "Limpieza completada."
-
-help:
-	@echo "Opciones disponibles:"
-	@echo "  make         Compila los ejecutables en C de la Parte 2"
-	@echo "  make test    Ejecuta las pruebas completas (Parte 1 y Parte 2)"
-	@echo "  make test-p1 Ejecuta los ejercicios de AWK (Parte 1)"
-	@echo "  make test-p2 Compila y ejecuta las pruebas de alineamiento (Parte 2)"
-	@echo "  make report  Genera informe.pdf con pdflatex"
-	@echo "  make clean   Elimina ejecutables y temporales"
