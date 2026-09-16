@@ -13,7 +13,7 @@ BEGIN {
 }
 
 # -------------------------------------------------------------
-# FASE 1: FASTA (ARGIND == 1)
+# FASE 1: Referencia FASTA (ARGIND == 1)
 # -------------------------------------------------------------
 ARGIND == 1 {
     gsub(/[\r\n]/, "", $0);
@@ -76,7 +76,7 @@ ARGIND == 2 {
 # -------------------------------------------------------------
 # Funciones
 # -------------------------------------------------------------
-function hash_kmer(str, mod_val,    len, h, i, ch, val) {
+function hash_kmer(str, mod_val,    len, h, i, ch, val, term1, term2) {
     len = length(str);
     h = 2166136261;
     for (i = 1; i <= len; i++) {
@@ -87,7 +87,10 @@ function hash_kmer(str, mod_val,    len, h, i, ch, val) {
         else if (ch == "T") val = 3;
         else return -1;
 
-        h = (h * 16777619 + val) % 4294967296;
+        # Multiplicación dividida para evitar desbordar 2^53 (precisión IEEE 754 de AWK)
+        term1 = (h % 256) * 16777216;
+        term2 = h * 403;
+        h = (term1 + term2 + val) % 4294967296;
     }
     return h % mod_val;
 }
@@ -142,7 +145,7 @@ function process_read(read_id, seq,    read_len, i, kmer, idx, p_ref, p_cand, vo
             best_cand = cand_num;
             best_ref = cand_ref[cand];
         } else if (score == best_score) {
-            if (cand_num < best_cand) {
+            if (best_cand == 0 || cand_num < best_cand) {
                 best_cand = cand_num;
                 best_ref = cand_ref[cand];
             }
