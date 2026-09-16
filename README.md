@@ -4,7 +4,7 @@
 
 **Entorno de desarrollo:** WSL2 (Ubuntu 24.04 LTS), Intel Core i5-10300H CPU @ 2.50GHz (8 vCPUs), 8GB RAM
 
-**Asignatura:** Programación de Sistemas / Bioinformática
+**Asignatura:** Programación Masivo de Datos
 
 ---
 
