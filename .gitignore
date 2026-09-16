@@ -1,0 +1,23 @@
+# Excluir la carpeta de datos genómicos
+data/
+*.fq
+*.fq.gz
+*.fastq
+*.fastq.gz
+*.fna
+*.fna.gz
+
+# Excluir binarios compilados
+aligner_seq
+aligner_pthreads
+
+# Excluir resultados masivos (.tsv grandes)
+resultados/
+*.tsv
+
+# Excluir archivos auxiliares de LaTeX (mantener solo el .tex y el .pdf final)
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
