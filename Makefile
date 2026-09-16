@@ -29,7 +29,7 @@ data:
 setup: data all
 
 test-p1:
-	@chmod +x run_problema_1.sh
+	@chmod +x run_problema1.sh
 	./run_problema1.sh all
 
 test-ecoli: all
