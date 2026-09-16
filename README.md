@@ -28,8 +28,6 @@ Este proyecto aborda la resolución de problemas de procesamiento masivo de dato
 ├── aligner.awk             # Parte 2: Implementación secuencial en AWK (FNV-1a 53-bit)
 ├── aligner_seq.c           # Parte 2: Implementación secuencial optimizada en C (-O3)
 ├── aligner_pthreads.c      # Parte 2: Implementación multihilo en C (Pthreads + Buffer de Reorden)
-├── informe.tex             # Código fuente en LaTeX del informe formal
-├── informe.pdf             # Informe técnico final compilado en PDF
 ├── scripts/
 │   └── download_data.sh    # Descarga automatizada y preparación ligera de datasets
 ├── tests/
