@@ -23,8 +23,8 @@ $(REPORT): informe.tex
 	$(LATEX) informe.tex
 
 test-p1:
-	@chmod +x run_problema_1.sh
-	./run_problema_1.sh all
+	@chmod +x run_problema1.sh
+	./run_problema1.sh all
 
 test-p2: all
 	@chmod +x tests/run_tests.sh
