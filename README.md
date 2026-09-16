@@ -19,17 +19,15 @@ Este proyecto aborda la resolución de problemas de procesamiento masivo de dato
 
 ## Estructura del Repositorio
 
-* **`Makefile`**: Automatización del ciclo de compilación, ejecución de tests y generación del informe en PDF.
+* **`Makefile`**: Automatización del ciclo de compilación, ejecución de tests.
 * **`README.md`**: Documentación técnica y guía de reproducción.
 * **`.gitignore`**: Exclusión de archivos binarios, salidas temporales y carpetas de datos genómicos.
-* **`run_problema_1.sh`**: Script interactivo con las soluciones a los incisos 1.a al 1.j.
+* **`run_problema1.sh`**: Script interactivo con las soluciones a los incisos 1.a al 1.j.
 * **`aligner.awk`**: Alineador secuencial implementado en GNU Awk (con aritmética FNV-1a compatible con mantisa de 53 bits).
 * **`aligner_seq.c`**: Alineador secuencial de alto rendimiento escrito en C (`-O3`).
 
 
 * **`aligner_pthreads.c`**: Alineador concurrente con arquitectura Productor-Consumidor y buffer de reordenamiento monotónico para asegurar salidas idénticas en orden FIFO.
-* **`informe.tex`**: Código fuente del reporte académico formal en LaTeX.
-* **`informe.pdf`**: Reporte técnico final generado.
 * **`tests/run_tests.sh`**: Suite de validación automatizada mediante comparaciones binarias (`cmp`).
 * **`tests/stats.awk`**: Script auxiliar para el desglose de tasas de hits y distribución de frecuencias de puntajes.
 * **`data/`**: Carpeta local para los datasets de referencia y lecturas (no incluida en el control de versiones).
@@ -38,7 +36,7 @@ Este proyecto aborda la resolución de problemas de procesamiento masivo de dato
 
 ## Parte 1: Procesamiento de Archivos Tabulares
 
-El script `run_problema_1.sh` resuelve las consultas requeridas:
+El script `run_problema1.sh` resuelve las consultas requeridas:
 
 * **1.a:** Promedio de habitantes por ciudad agrupado por país (omitiendo registros sin población).
 * **1.b:** Las 10 ciudades con mayor población en orden descendente.
@@ -95,7 +93,7 @@ make test-p1
 
 * Un ejercicio individual (ejemplo: 1.d):
 ```bash
-./run_problema_1.sh d
+./run_problema1.sh d
 
 ```
 
@@ -117,13 +115,6 @@ make test
 ```
 
 
-
-### Generación del Informe
-
-```bash
-make report
-
-```
 
 ### Limpieza de Archivos Temporales
 
