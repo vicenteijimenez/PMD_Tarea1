@@ -19,6 +19,7 @@ Este proyecto aborda la resolución de problemas de procesamiento masivo de dato
 
 ## Estructura del Repositorio
 
+´´´text
 .
 ├── Makefile                # Automatización de compilación, ejecución, reporte y descarga
 ├── README.md               # Documentación general y guía de uso
@@ -42,7 +43,7 @@ Este proyecto aborda la resolución de problemas de procesamiento masivo de dato
     ├── EC.50X.R1.fastq.gz
     ├── GRCh38_chr21.fna
     └── sample_human.fq
-
+´´´
 ---
 
 ## Parte 1: Procesamiento de Archivos Tabulares
