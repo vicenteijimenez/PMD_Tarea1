@@ -148,4 +148,25 @@ make clean
 
 ```
 
+## Troubleshooting para macOS
+
+Si ejecutas las pruebas en macOS, corre esta secuencia una sola vez desde la raíz del proyecto para corregir permisos y compatibilizar las utilidades de medición:
+
+```bash
+# 1. Recuperar propiedad de binarios y temporales
+sudo chown -R "$USER":staff .
+
+# 2. Instalar GNU time
+brew install gnu-time
+
+# 3. Adaptar llamadas de tiempo en todos los scripts de prueba
+sed -i '' 's#/usr/bin/time#gtime#g' tests/*.sh
+
+# 4. Compilar y ejecutar pruebas
+make test
+
+```
+
+> **Nota:** Evita ejecutar comandos con `sudo make` para no bloquear los permisos de compilación de los binarios.
+
 ---
