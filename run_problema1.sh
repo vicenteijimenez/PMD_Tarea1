@@ -1,14 +1,14 @@
 #!/bin/bash
 # run_problema  1.sh
 
-# gzip -dc worldcitiespop.csv.gz | awk -F',' '...'
+# gzip -dc data/worldcitiespop.csv.gz | awk -F',' '...'
 # Primero se descomprime con 'gzip -dc' para enviar el texto directamente a la salida estándar sin extraer archivos en disco.
 # Se usa la pipeline '|' para pasar ese flujo de texto directamente a awk sin guardar nada intermedio.
 # - Usamos la flag -F ',' para indicar que el separador de columnas del CSV es la coma.
 
 a() {
     echo "1.a: Promedio de habitantes por ciudad y país"
-    gzip -dc worldcitiespop.csv.gz | awk -F',' 'NR > 1 && $5 != "" && $5 > 0 {
+    gzip -dc data/worldcitiespop.csv.gz | awk -F',' 'NR > 1 && $5 != "" && $5 > 0 {
         sum[$1] += $5; count[$1]++
     } END {
         for (c in sum) printf "%s\t%.2f\n", c, sum[c] / count[c]
@@ -17,14 +17,14 @@ a() {
 
 b() {
     echo "1.b: 10 ciudades con mayor población"
-    gzip -dc worldcitiespop.csv.gz | awk -F',' 'NR > 1 && $5 ~ /^[0-9]+$/ {
+    gzip -dc data/worldcitiespop.csv.gz | awk -F',' 'NR > 1 && $5 ~ /^[0-9]+$/ {
         print $5, $3, $1
     }' | sort -k1,1nr | head -n 10
 }
 
 c() {
     echo "1.c: Porcentaje de ciudades sin población por país"
-    gzip -dc worldcitiespop.csv.gz | awk -F',' 'NR > 1 {
+    gzip -dc data/worldcitiespop.csv.gz | awk -F',' 'NR > 1 {
         total[$1]++
         if ($5 == "" || $5 == 0) no_pop[$1]++
     } END {
@@ -37,7 +37,7 @@ c() {
 
 d() {
     echo "1.d: Habitantes y ciudad más poblada de Sudamérica"
-    gzip -dc worldcitiespop.csv.gz | awk -F',' '
+    gzip -dc data/worldcitiespop.csv.gz | awk -F',' '
     BEGIN {
         split("ar bo br cl co ec fk gf gy pe py sr uy ve", sa, " ")
         for (i in sa) is_sa[sa[i]] = 1
@@ -63,14 +63,14 @@ e() {
         }
     } END {
         for (i = 1; i <= length(max); i++) printf "Col %d: Min = %d, Max = %d\n", i, min[i], max[i]
-    }' matrix.txt
+    }' data/matrix.txt
 }
 
 f() {
     echo "1.f: Invertir columnas (matrix.txt) [Primeras 3 filas de muestra]"
     awk '{
         for (i = NF; i >= 1; i--) printf "%s%s", $i, (i == 1 ? RS : FS)
-    }' matrix.txt | head -n 3
+    }' data/matrix.txt | head -n 3
 }
 
 g() {
@@ -84,14 +84,14 @@ g() {
         row_sum = 0
         for (i = 1; i <= NF; i++) row_sum += $i
         if ((row_sum / NF) > global_avg) print "Fila " FNR " (Prom: " row_sum/NF " > Global: " global_avg ")"
-    }' matrix.txt matrix.txt
+    }' data/matrix.txt data/matrix.txt
 }
 
 h() {
     echo "1.h: Cantidad de impares (matrix.txt)"
     awk '{
         for (i = 1; i <= NF; i++) if ($i % 2 != 0) odds++
-    } END { print "Total impares:", odds }' matrix.txt
+    } END { print "Total impares:", odds }' data/matrix.txt
 }
 
 i() {
@@ -106,7 +106,7 @@ i() {
         printf "Divisibles por 4: %d\n", c4
         printf "Divisibles por 9: %d\n", c9
         printf "Divisibles por ambos: %d\n", c_both
-    }' matrix.txt
+    }' data/matrix.txt
 }
 
 j() {
@@ -120,7 +120,7 @@ j() {
     } END {
         print "Fila:", best_idx, "(Suma =", max_sum ")"
         print best_row
-    }' matrix.txt
+    }' data/matrix.txt
 }
 
 all() {
